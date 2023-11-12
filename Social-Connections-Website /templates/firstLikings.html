@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Likings
+
+{% endblock %}
+
+
+{% block main %}
+
+<script>
+  function selectWord(element) {
+    element.classList.toggle('selected');
+  }
+
+  function submitWords() {
+    var form = document.getElementById("like"); // Get your form
+    var selectedWords = document.querySelectorAll('.word.selected');
+
+    selectedWords.forEach(function(word) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'selectedWord'; // Set a name for the input
+      input.value = word.textContent; // Set the value to the word's text
+      form.appendChild(input); // Append the input to the form
+    });
+
+    if (selectedWords.length < 3) {
+        alert("Please select at least 3 Likings.");
+        return; // Stop the function here
+      }
+
+    form.submit(); // Submit the form
+  }
+</script>
+
+   <center><table class="table-width">
+
+        <thead><center><h2 class="div-pos"><b>Likings</b></h2></center></thead>
+
+        <tr class="tr-height"></tr>
+
+        <tbody>
+        <tr>
+           <center><div class="box">
+
+                {% for like in likings %}
+
+                    <button class="word" onclick="selectWord(this)">{{ like }}</button>
+
+                {% endfor %}
+            </div>
+
+        </center>
+        </tr>
+        <form id="like" action="/likings" method="post">
+        <td style="text-align: right;">
+            <button type="submit" class="btn btn-primary" style="margin-right: 20px;" onclick="submitWords()">Create Profile</button>
+        </td>
+    </form>
+        </tbody>
+
+
+    </table></center>
+
+{% endblock %}

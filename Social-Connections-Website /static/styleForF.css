@@ -1,0 +1,68 @@
+.word.selected {
+    background-color: blue;
+  }
+
+  .table-width {
+    width: 550px;
+  }
+
+  .div-pos {
+    margin-right: 40px;
+  }
+
+  .tr-height {
+    height: 50px;
+  }
+
+  .box {
+    padding-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 25%;
+  }
+
+  .word {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #6c757d;
+    color: white;
+    border-color: #5a6268;
+    border-radius: 12px;
+  }
+
+.no-padding {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    width: auto;
+
+}
+
+.message-text-right {
+  color: white; /* Dark gray color */
+  font-size: 16px; /* Font size */
+  text-align: right; /* Aligns the text to the right */
+  margin: 10px 0; /* Adds some vertical spacing */
+  margin-right: 20px; /* Adds space to the right */
+  background-color: blue; /* Makes the background blue */
+  border-radius: 25%; /* Makes the shape a circle */
+  padding: 10px; /* Adds some space around the text */
+  width: fit-content; /* Makes the width fit the*/
+  margin-left: auto;
+
+}
+
+
+.message-text-left {
+  color: white; /* Dark gray color */
+  font-size: 16px; /* Font size */
+  text-align: left; /* Aligns the text to the right */
+  margin: 10px 0; /* Adds some vertical spacing */
+  margin-left: 20px; /* Adds space to the right */
+  background-color: grey; /* Makes the background blue */
+  border-radius: 25%; /* Makes the shape a circle */
+  padding: 10px; /* Adds some space around the text */
+  width: fit-content; /* Makes the width fit the*/
+  margin-right: auto;
+}

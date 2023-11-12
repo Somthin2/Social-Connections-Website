@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+
+    <!-- Content -->
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                {% if session["user_id"] %}
+                <h1>Welcome , {{ person['username'] }} </h1>
+                <p>This is a simple Bootstrap layout for the webpage.</p>
+            </div>
+                {% else %}
+                <h1>Welcome to MoreSpice</h1>
+            </div>
+            {% endif %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest Updates</h5>
+                        <p class="card-text">Stay updated with our latest news and events.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

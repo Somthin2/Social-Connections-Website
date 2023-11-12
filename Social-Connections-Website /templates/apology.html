@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <!-- https://memegen.link/ -->
+    <img alt="{{ top }}" class="border img-fluid" src="https://api.memegen.link/images/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.png?alt=https://memetemplatehouse.com/wp-content/uploads/2020/08/batman-slapping-robbin-comic-meme-template-768x768.jpg" title="{{ top }}">
+{% endblock %}

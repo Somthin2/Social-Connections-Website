@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Swiping
+
+{% endblock %}
+
+{% block main %}
+    <script>
+
+        var profiles = {{ profiles|tojson }};
+        var shows = {{ shows|tojson }};
+        var nicknames = {{ nicknames|tojson }};
+        var likings = {{ likings|tojson }};
+
+
+        let profiless = [
+            {% for profile in profiles %}
+                "{{ "static/" + profile }}",
+            {% endfor %}
+        ];
+
+        let otherid = [
+        {% for names in nicknames %}
+            "{{names}}",
+        {% endfor %}
+        ];
+
+        let showsIndexes = [
+        {% for value in shows %}
+        "{{value}}",
+        {% endfor %}
+        ];
+        let noneFile = "{{ url_for('static', filename='none.jpg') }}";
+
+        document.addEventListener("DOMContentLoaded",function() {
+
+            if (profiless.length == 0){
+                document.getElementById('dynamicImage').src = noneFile;
+            }
+            else{
+                document.getElementById('dynamicImage').src = profiless[0];
+                document.getElementById('nickname').innerText = nicknames[otherid[0]];
+                document.getElementById('likings').innerText = likings[otherid[0]]['likings'].join(", ");
+            }
+
+              });
+
+        let currentImageIndex = 0;
+
+        function Buttons(event) {
+
+
+            var buttonValue = event.target.value;
+
+            if (currentImageIndex > showsIndexes.length -1)
+            {
+                document.getElementById('dynamicImage').src = noneFile;
+                document.getElementById('nickname').innerText = "No Users Left";
+                document.getElementById('likings').innerText = "None";
+
+            }
+            else{
+
+            document.getElementById('nickname').innerText = nicknames[otherid[currentImageIndex]];
+            document.getElementById('likings').innerText = likings[otherid[currentImageIndex]]['likings'].join(", ");
+            console.log(likings[otherid[currentImageIndex]]);
+
+                var otherId = shows[showsIndexes[currentImageIndex]]['other_id']
+                fetch('/updateUserOption', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        choice: buttonValue,
+                        'usrId': otherId
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                    currentImageIndex = (currentImageIndex + 1);
+                    document.getElementById('dynamicImage').src = profiless[currentImageIndex];
+                    });
+                }
+            }
+
+
+    </script>
+<center>
+<u>
+    <h2 id="nickname">
+            Nickname
+    </h2>
+</u>
+</center>
+    <center>
+
+        <table style="margin-top: 75px; width: 350px; height: 350px; border: 1px solid black;">
+
+
+            <div>
+                <div style="margin-top: 75px; text-align: left; width: 350px; height: auto; border: 1px solid black;">Likings :
+
+                    <b id="likings"></b>
+                </div>
+                <img id="dynamicImage" src = "/static/none.jpg" style="margin-top: 20px; width: 350px; height: 350px; border: 1px solid black;">
+
+
+            </div>
+
+
+
+
+            <div>
+                <button id="declineButton" name="choice" value="decline" onclick="Buttons(event)" class="word" style="width: 150px;">Decline</button>
+                <button id="agreeButton" name="choice" value="agree" onclick="Buttons(event)" class="word" style="width: 150px;">Accept</button>
+            </div>
+
+        </table>
+    </center>
+
+{% endblock %}

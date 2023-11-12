@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Messages
+{% endblock %}
+
+{% block padding_class %}{% endblock %}
+{% block custom_class %}no-padding{% endblock %}
+
+{% block main %}
+
+    <div style="background-color: #B3B2B2; padding: 10px; display: flex; justify-content: center; align-items: center;">
+        <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Messages</h1>
+    </div>
+    <div class="py-5" style="display: flex; flex-direction: row;">
+        <div style="display: flex; flex-direction: column; margin-right: 40px;">
+            {% for usr in usrProfiles %}
+        <a href="/select_user?selected_user={{ usr['profile']['nickname'] }}&id={{ usr['id'] }}">
+            <div style="border:1px solid black; padding:10px; width:300px; height: 75px; text-align:left; display: flex; align-items: center;">
+            <img src={{ url_for('static', filename=usr['profile']['img_path']) }} style="display: inline; width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+            <span style="font-size: 14px; font-weight: bold; color: #333; font-family: Arial, sans-serif; flex: 1; text-align: center;">{{ usr['profile']['nickname'] }}</span>
+        </div>
+    </a>
+{% endfor %}
+        </div>
+
+        {% if selected_user is not none %}
+    <!-- Show selcted User + Open the Chat -->
+    <div class="chat-interface" style="border:1px solid black; padding:10px; width:100%; height: 800px; overflow-y: auto; position: relative;">
+        <hr style="border-top: 1px solid black; position: absolute; top: 50px; left: 0; right: 0;">
+        <img src={{ url_for('static', filename= session['filename'] )}} style="display: inline; width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+        <span style="font-size: 14px; font-weight: bold; color: #333; font-family: Arial, sans-serif; flex: 1; text-align: center;">{{ selected_user }}</span>
+
+        <div style="position: absolute; top: 90px; left: 0; right: 0; bottom: 90px; overflow-y: auto;">
+        <!-- Chat messages would go here -->
+        {% if chat_data is not none %}
+            {% for message in chat_data %}
+            {% if chat_data[message]['sender'] == user %}
+            <div class = "message-text-right">
+                {{ chat_data[message]['text'] }}
+            </div>
+            {% else %}
+            <div class = "message-text-left">
+                {{ chat_data[message]['text'] }}
+            </div>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+        </div>
+        <hr style="border-top: 1px solid black; position: absolute; bottom: 50px; left: 0; right: 0;">
+        <div style="position: absolute; bottom: 20px; display: flex; justify-content: center; width: 100%;">
+            <form action="/send_message" method="post">
+                <input type="text" class="input-text" name="message" placeholder="Type your message here..." style="height: 35px; width: 400px; padding: 5px;" required>
+                <button class="btn btn-primary" style="margin-left: 10px; background-color: #007BFF; border: none; color: white; padding: 5px 10px;">Send Message</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    </div>
+
+
+{% endblock %}

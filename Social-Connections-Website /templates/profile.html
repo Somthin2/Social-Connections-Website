@@ -1,0 +1,133 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile Customization
+{% endblock %}
+
+{% block main %}
+
+    <table>
+        <h2><b>Profile</b></h2>
+    </table>
+    <script>
+        function selectWord(element) {
+            element.classList.toggle('selected');
+        }
+
+        function submitWords() {
+            var form = document.getElementById("like"); // Get your form
+            var selectedWords = document.querySelectorAll('.word.selected');
+
+            selectedWords.forEach(function(word) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedWord'; // Set a name for the input
+                input.value = word.textContent; // Set the value to the word's text
+                form.appendChild(input); // Append the input to the form
+            });
+
+            if (selectedWords.length < 3) {
+                alert("Please select at least 3 Likings.");
+                return; // Stop the function here
+            }
+
+            form.submit(); // Submit the form
+        }
+
+
+        window.onload = function() {
+            var preSelectedButtons = document.getElementsByClassName('pre-selected');
+            for (var i = 0; i < preSelectedButtons.length; i++) {
+                selectWord(preSelectedButtons[i]);
+            }
+        }
+    </script>
+
+    <center>
+        <table style="width: 25%;  margin-top: 20px; margin-bottom: 10px; text-align: center;">
+            <tbody>
+
+                <form action="/update_profile" method="post" enctype="multipart/form-data" style="display: inline; margin: auto; text-align: center;">
+                    <tr>
+                        <td style="padding-top: 0px;">
+                            <input type="file" id="file" name="file" style="display: none;">
+                            <label for="file">
+                                <img src={{ url_for('static', filename=usrInfo['img_path']) }} style="display: inline-block; width: 125px; height: 125px; border-radius: 50%; margin-bottom: 15px;" alt="Profile Picture">
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control mx-auto" type="text" id="nickname" name="nickname" placeholder="Username" style="width: 200px;" value="{{ usrInfo['nickname'] }}" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="gender" name="gender" class="form-control mx-auto" style="width: 99px; display: inline;" required>
+                                <option value="male" {% if usrInfo["gender"] == "male" %}selected{% endif %}>Male</option>
+                                <option value="female" {% if usrInfo["gender"] == "female" %}selected{% endif %}>Female</option>
+                                <option value="couple" {% if usrInfo["gender"] == "couple" %}selected{% endif %}>Couple</option>
+                            </select>
+                            <input class="form-control mx-auto" type="text" id="age" name="age" placeholder="Age" style="width: 95px; display: inline;" value="{{ usrInfo['age'] }}" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select id="looking" name="looking" class="form-control mx-auto" style="width: 200px; display: inline;" required>
+                                <option value="male" {% if usrInfo["looking"] == "male" %}selected{% endif %}>Male</option>
+                                <option value="female" {% if usrInfo["looking"] == "female" %}selected{% endif %}>Female</option>
+                                <option value="couple" {% if usrInfo["looking"] == "couple" %}selected{% endif %}>Couple</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 30px;">
+                            <button class="btn btn-primary" type="submit">Update Profile</button>
+                        </td>
+                    </tr>
+                </form>
+
+            </tbody>
+        </table>
+    </center>
+    <div style="height: 75px"></div>
+    <center>
+        <table class="table-width">
+
+            <thead>
+                <center>
+                    <h2><b>Likings</b></h2>
+                </center>
+            </thead>
+
+            <tr class="tr-height"></tr>
+
+            <tbody>
+                <tr>
+                    <center>
+                        <div class="box">
+
+                            {% for like in likings %}
+
+                                {% if like in likes %}
+                                    <button class="pre-selected word" onclick="selectWord(this)">{{ like }}</button>
+                                {% else %}
+                                    <button class="word" onclick="selectWord(this)">{{ like }}</button>
+                                {% endif %}
+
+                            {% endfor %}
+                        </div>
+
+                    </center>
+                </tr>
+                <form id="like" action="/update_likings" method="post">
+                    <td style="text-align: center;">
+                        <button type="submit" class="btn btn-primary" onclick="submitWords()">Update Likings</button>
+                    </td>
+                </form>
+            </tbody>
+        </table>
+    </center>
+
+
+{% endblock %}
